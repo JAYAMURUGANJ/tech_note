@@ -3,9 +3,9 @@ import 'package:firstdesktop/controller/record_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'view/NoteList_page.dart';
+//import 'view/NoteList_page.dart';
 import 'view/list_page.dart';
-import 'view/record_page.dart';
+//import 'view/record_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
