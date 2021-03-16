@@ -4,7 +4,7 @@ import 'form_page.dart';
 
 class CustomeText extends StatelessWidget {
   const CustomeText({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -34,7 +34,7 @@ class _ListNoteState extends State<ListNote> {
   Widget space = CustomeText();
   bool check = true;
   bool sort = false;
-  String name;
+  String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,7 @@ class _ListNoteState extends State<ListNote> {
                 .collection('NoteList')
                 .orderBy('title', descending: sort)
                 .where('title', isGreaterThanOrEqualTo: name)
-                .where('title', isLessThan: name + 'z')
+                .where('title', isLessThan: name! + 'z')
                 .snapshots()
             : _db
                 .collection("NoteList")
@@ -126,14 +126,16 @@ class _ListNoteState extends State<ListNote> {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.data == null) return CircularProgressIndicator();
           return ListView.builder(
-              itemCount: snapshot.data.docs.length,
+              itemCount: snapshot.data!.docs.length,
               itemBuilder: (BuildContext context, int index) {
                 //print(snapshot.data.docs.elementAt(index).id);
                 //var row = index + 1;
-                String title = snapshot.data.docs.elementAt(index)['title'];
+                String title = snapshot.data!.docs.elementAt(index)['title'];
                 String subtitle =
-                    snapshot.data.docs.elementAt(index)['subtitle'];
-                String id = snapshot.data.docs.elementAt(index).id;
+                    snapshot.data!.docs.elementAt(index)['subtitle'];
+                String? imageUrl =
+                    snapshot.data!.docs.elementAt(index)['image'];
+                String id = snapshot.data!.docs.elementAt(index).id;
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
@@ -141,12 +143,15 @@ class _ListNoteState extends State<ListNote> {
                       margin: EdgeInsets.all(5.0),
                       child: Column(
                         children: [
-                          Image.network(
-                            snapshot.data.docs.elementAt(index)['image'],
-                            fit: BoxFit.cover,
-                            width: width / 0.5,
-                            height: 200.0,
-                          ),
+                          (imageUrl != null)
+                              ? Image.network(
+                                  imageUrl,
+                                  fit: BoxFit.cover,
+                                  width: width / 0.5,
+                                  height: 200.0,
+                                )
+                              : Placeholder(
+                                  fallbackHeight: 100.0, fallbackWidth: 250.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -160,7 +165,7 @@ class _ListNoteState extends State<ListNote> {
                                 ),
                               ),
                               Container(
-                                width: width / 1.6,
+                                width: width / 1.7,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -195,6 +200,8 @@ class _ListNoteState extends State<ListNote> {
                                                                 title: title,
                                                                 subtitle:
                                                                     subtitle,
+                                                                imgUrl:
+                                                                    imageUrl,
                                                                 id: id,
                                                               )),
                                                     );

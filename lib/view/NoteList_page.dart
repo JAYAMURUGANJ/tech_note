@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class CustomeText extends StatelessWidget {
   const CustomeText({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -94,7 +94,7 @@ class _NoteListState extends State<NoteList> {
         stream: FirebaseFirestore.instance.collection('NoteList').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           // ignore: deprecated_member_use
-          var note = snapshot.data.docs;
+          var note = snapshot.data!.docs;
           int length = note.length;
           if (snapshot.data == null && !snapshot.hasData && snapshot.hasError) {
             return CircularProgressIndicator();

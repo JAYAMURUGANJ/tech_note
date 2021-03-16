@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 
 //import 'view/NoteList_page.dart';
 import 'view/list_page.dart';
-//import 'view/record_page.dart';
+import 'view/upload_image.dart';
+import 'view/record_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.amber,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: ListNote(),
       ),

@@ -10,11 +10,11 @@ class AddressPage extends StatefulWidget {
 
 class _AddressPageState extends State<AddressPage> {
   // ignore: avoid_init_to_null
-  String _selectedDistrict = null;
+  String? _selectedDistrict = null;
   // ignore: avoid_init_to_null
-  String _selectedTaluk = null;
+  String? _selectedTaluk = null;
   // ignore: avoid_init_to_null
-  String _selectedTK = null;
+  String? _selectedTK = null;
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey =
@@ -71,10 +71,12 @@ class _AddressPageState extends State<AddressPage> {
         child: DataTable(
           columns: [DataTableColumn1(), DataTableColumn2()],
           rows: _selectedTK == null
-              ? provider.data.records.map((data) => DataTableRow(data)).toList()
-              : provider.data.records
+              ? provider.data!.records
+                  .map((data) => DataTableRow(data))
+                  .toList()
+              : provider.data!.records
                   .where(
-                      (rs) => rs.teshilTaluk.contains(_selectedTK.toString()))
+                      (rs) => rs.teshilTaluk!.contains(_selectedTK.toString()))
                   .map((data) => DataTableRow(data))
                   .toList(),
         ),
@@ -143,7 +145,7 @@ class _AddressPageState extends State<AddressPage> {
           items: talukList.map((value) {
             return DropdownMenuItem<String>(
               value: value.teshilTaluk,
-              child: Text(value.teshilTaluk),
+              child: Text(value.teshilTaluk!),
             );
           }).toList(),
           onChanged: (value) {
@@ -179,7 +181,7 @@ class _AddressPageState extends State<AddressPage> {
           items: districtList.map((value) {
             return DropdownMenuItem<String>(
               value: value.district,
-              child: Text(value.district),
+              child: Text(value.district!),
             );
           }).toList(),
           onChanged: (value) {
@@ -190,7 +192,7 @@ class _AddressPageState extends State<AddressPage> {
     );
   }
 
-  void talukOnChange(String value) {
+  void talukOnChange(String? value) {
     return setState(
       () {
         _selectedTaluk = value;
@@ -204,7 +206,7 @@ class _AddressPageState extends State<AddressPage> {
     });
   }
 
-  void districtOnChange(String value) {
+  void districtOnChange(String? value) {
     return setState(
       () {
         _selectedTaluk = null;
@@ -226,8 +228,8 @@ class _AddressPageState extends State<AddressPage> {
   // ignore: non_constant_identifier_names
   DataRow DataTableRow(Records data) {
     return DataRow(cells: [
-      DataCell(Text(data.district)),
-      DataCell(Text(data.teshilTaluk))
+      DataCell(Text(data.district!)),
+      DataCell(Text(data.teshilTaluk!))
     ]);
   }
 }

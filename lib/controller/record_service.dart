@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 var url = Uri.https('vocab.nic.in', '/pec.json');
 
 class MyHomePageProvider extends ChangeNotifier {
-  MessageData data;
-  MessageData district;
-  MessageData taluk;
+  MessageData? data;
+  late MessageData district;
+  late MessageData taluk;
 
 // ignore: missing_return
   Future<List<MessageData>> fetchforweb(context) async {
@@ -33,5 +33,6 @@ class MyHomePageProvider extends ChangeNotifier {
 
       this.notifyListeners();
     }
+    throw Exception();
   }
 }

@@ -1,7 +1,7 @@
 class MessageData {
-  String limit;
-  String offset;
-  List<Records> records;
+  String? limit;
+  String? offset;
+  late List<Records> records;
 
   MessageData.fromJson(Map<String, dynamic> json) {
     limit = json['limit'];
@@ -16,19 +16,19 @@ class MessageData {
 }
 
 class Records {
-  int slNo;
-  String district;
-  String teshilTaluk;
-  String area;
-  String centerType;
-  String centerName;
-  String centerAddress;
-  int contactNo;
-  int pincode;
-  String postOffice;
-  String latitude;
-  String longitude;
-  String altitude;
+  int? slNo;
+  String? district;
+  String? teshilTaluk;
+  String? area;
+  String? centerType;
+  String? centerName;
+  String? centerAddress;
+  int? contactNo;
+  int? pincode;
+  String? postOffice;
+  String? latitude;
+  String? longitude;
+  String? altitude;
 
   Records.fromJson(Map<String, dynamic> json) {
     slNo = json['sl_no'];
