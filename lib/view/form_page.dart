@@ -147,8 +147,9 @@ class MyCustomFormState extends State<MyCustomForm> {
       image = await _picker.getImage(source: ImageSource.gallery);
       var file = File(image!.path);
       //Upload to Firebase
+      var imagename = _titleTEC.text + _subtitletownTEC.text;
       var snapshot =
-          await _storage.ref().child('folderName/imageName3').putFile(file);
+          await _storage.ref().child('folderName/$imagename').putFile(file);
 
       var downloadUrl = await snapshot.ref.getDownloadURL();
       print(downloadUrl);
