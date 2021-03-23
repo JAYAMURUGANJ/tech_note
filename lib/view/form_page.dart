@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
 // Create a Form widget
+// ignore: must_be_immutable
 class MyCustomForm extends StatefulWidget {
   final String? title;
   final String? subtitle;
@@ -152,7 +153,7 @@ class MyCustomFormState extends State<MyCustomForm> {
           await _storage.ref().child('folderName/$imagename').putFile(file);
 
       var downloadUrl = await snapshot.ref.getDownloadURL();
-      print(downloadUrl);
+      //print(downloadUrl);
 
       setState(() {
         widget.imgUrl = downloadUrl;

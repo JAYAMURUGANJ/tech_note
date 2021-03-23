@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'detail_page.dart';
 import 'form_page.dart';
 
 class CustomeText extends StatelessWidget {
@@ -143,15 +144,31 @@ class _ListNoteState extends State<ListNote> {
                       margin: EdgeInsets.all(5.0),
                       child: Column(
                         children: [
-                          (imageUrl != null)
-                              ? Image.network(
-                                  imageUrl,
-                                  fit: BoxFit.cover,
-                                  width: width / 0.5,
-                                  height: 200.0,
-                                )
-                              : Placeholder(
-                                  fallbackHeight: 100.0, fallbackWidth: 250.0),
+                          GestureDetector(
+                            child: (imageUrl != null)
+                                ? Image.network(
+                                    imageUrl,
+                                    fit: BoxFit.cover,
+                                    width: width / 0.5,
+                                    height: 200.0,
+                                  )
+                                : Placeholder(
+                                    fallbackHeight: 100.0,
+                                    fallbackWidth: 250.0),
+                            onTap: () {
+                              // Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NoteDetails(
+                                          title: title,
+                                          subtitle: subtitle,
+                                          imgUrl: imageUrl,
+                                          id: id,
+                                        )),
+                              );
+                            },
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
