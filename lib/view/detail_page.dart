@@ -38,8 +38,25 @@ class _NoteDetailsState extends State<NoteDetails> {
             ),
           ),
           SliverList(
-              delegate:
-                  SliverChildListDelegate([Text(widget.title.toString())]))
+              delegate: SliverChildListDelegate([
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                widget.title!.toString(),
+                style: TextStyle(fontSize: 25.0),
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                widget.subtitle!.toString(),
+                style: TextStyle(fontSize: 15.0),
+              ),
+            ),
+          ]))
         ],
       ),
     );

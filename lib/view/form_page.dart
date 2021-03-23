@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,7 +28,7 @@ class MyCustomFormState extends State<MyCustomForm> {
   final _titleTEC = TextEditingController();
   final _subtitletownTEC = TextEditingController();
   String? imageUrl;
-
+  bool imageLoding = false;
   @override
   Widget build(BuildContext context) {
     _titleTEC.text = widget.title != null ? widget.title! : "";
@@ -43,25 +45,6 @@ class MyCustomFormState extends State<MyCustomForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextFormField(
-                controller: _titleTEC,
-                decoration: const InputDecoration(
-                  icon: const Icon(Icons.person),
-                  hintText: 'Enter Language Name',
-                  labelText: 'Name',
-                ),
-              ),
-              TextFormField(
-                controller: _subtitletownTEC,
-                decoration: const InputDecoration(
-                  icon: const Icon(Icons.phone),
-                  hintText: 'Enter Subtitle',
-                  labelText: 'Subtitle',
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
               Text(
                 "Poster",
                 style: TextStyle(color: Colors.black54, fontSize: 18.0),
@@ -79,8 +62,15 @@ class MyCustomFormState extends State<MyCustomForm> {
                             height: 100.0,
                             fit: BoxFit.cover,
                           )
-                        : Placeholder(
-                            fallbackHeight: 100.0, fallbackWidth: 250.0),
+                        : Image.network(
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYB4fmJMs3cQZEg1WwaCX4_ViLyR7gbkSsnQ&usqp=CAU",
+                            width: 250,
+                            height: 100.0,
+                            fit: BoxFit.cover,
+                          ),
+
+                    //Placeholder(
+                    // fallbackHeight: 100.0, fallbackWidth: 250.0),
                     SizedBox(
                       height: 20.0,
                     ),
@@ -97,6 +87,34 @@ class MyCustomFormState extends State<MyCustomForm> {
                       onPressed: () => uploadImage(),
                     ),
                   ],
+                ),
+              ),
+              imageLoding != false
+                  ? Column(
+                      children: [
+                        Center(child: CircularProgressIndicator()),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                      ],
+                    )
+                  : SizedBox(
+                      height: 10.0,
+                    ),
+              TextFormField(
+                controller: _titleTEC,
+                decoration: const InputDecoration(
+                  icon: const Icon(Icons.person),
+                  hintText: 'Enter Language Name',
+                  labelText: 'Name',
+                ),
+              ),
+              TextFormField(
+                controller: _subtitletownTEC,
+                decoration: const InputDecoration(
+                  icon: const Icon(Icons.phone),
+                  hintText: 'Enter Subtitle',
+                  labelText: 'Subtitle',
                 ),
               ),
               Container(
@@ -137,7 +155,6 @@ class MyCustomFormState extends State<MyCustomForm> {
     final _storage = FirebaseStorage.instance;
     final _picker = ImagePicker();
     PickedFile? image;
-
     //Check Permissions
     await Permission.photos.request();
 
@@ -146,17 +163,19 @@ class MyCustomFormState extends State<MyCustomForm> {
     if (permissionStatus.isGranted) {
       //Select Image
       image = await _picker.getImage(source: ImageSource.gallery);
+      setState(() {
+        imageLoding = true;
+      });
       var file = File(image!.path);
       //Upload to Firebase
-      var imagename = _titleTEC.text + _subtitletownTEC.text;
+      var imagename = Random().nextInt(10000).toString();
       var snapshot =
           await _storage.ref().child('folderName/$imagename').putFile(file);
-
       var downloadUrl = await snapshot.ref.getDownloadURL();
       //print(downloadUrl);
-
       setState(() {
         widget.imgUrl = downloadUrl;
+        imageLoding = false;
       });
     } else {
       print('Grant Permissions and try again');

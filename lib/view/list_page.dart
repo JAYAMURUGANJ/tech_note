@@ -112,6 +112,7 @@ class _ListNoteState extends State<ListNote> {
         },
         child: Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: StreamBuilder(
         stream: (name != "" && name != null)
             ? _db
