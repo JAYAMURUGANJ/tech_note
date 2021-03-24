@@ -122,22 +122,20 @@ class MyCustomFormState extends State<MyCustomForm> {
                 child: new OutlinedButton(
                   child: Text(widget.id != null ? "UPDATE" : "ADD"),
                   onPressed: () {
+                    var data = {
+                      'title': _titleTEC.text,
+                      'subtitle': _subtitletownTEC.text,
+                      'image': widget.imgUrl
+                    };
                     if (widget.id != null) {
-                      var data = {
-                        'title': _titleTEC.text,
-                        'subtitle': _subtitletownTEC.text,
-                        'image': widget.imgUrl
-                      };
                       FirebaseFirestore.instance
                           .collection('NoteList')
                           .doc(widget.id)
                           .update(data);
                     } else {
-                      FirebaseFirestore.instance.collection('NoteList').add({
-                        'title': _titleTEC.text,
-                        'subtitle': _subtitletownTEC.text,
-                        'image': widget.imgUrl
-                      });
+                      FirebaseFirestore.instance
+                          .collection('NoteList')
+                          .add(data);
                     }
 
                     Navigator.pop(context);
