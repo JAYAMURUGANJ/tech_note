@@ -146,16 +146,19 @@ class _ListNoteState extends State<ListNote> {
                       child: Column(
                         children: [
                           GestureDetector(
-                            child: (imageUrl != null)
+                            child: imageUrl != null
                                 ? Image.network(
                                     imageUrl,
                                     fit: BoxFit.cover,
                                     width: width / 0.5,
                                     height: 200.0,
                                   )
-                                : Placeholder(
-                                    fallbackHeight: 100.0,
-                                    fallbackWidth: 250.0),
+                                : Image.network(
+                                    "https://gift-cards.ad.iq/images/empty-image.jpg",
+                                    fit: BoxFit.cover,
+                                    width: width / 0.5,
+                                    height: 200.0,
+                                  ),
                             onTap: () {
                               // Navigator.pop(context);
                               Navigator.push(

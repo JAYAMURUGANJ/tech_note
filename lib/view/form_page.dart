@@ -33,116 +33,125 @@ class MyCustomFormState extends State<MyCustomForm> {
   Widget build(BuildContext context) {
     _titleTEC.text = widget.title != null ? widget.title! : "";
     _subtitletownTEC.text = widget.subtitle != null ? widget.subtitle! : "";
-    print(widget.imgUrl);
+    //print(widget.imgUrl);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.id != null ? "Update Note" : "Add Note"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Poster",
-                style: TextStyle(color: Colors.black54, fontSize: 18.0),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    (widget.imgUrl != null)
-                        ? Image.network(
-                            widget.imgUrl!,
-                            width: 250,
-                            height: 100.0,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.network(
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYB4fmJMs3cQZEg1WwaCX4_ViLyR7gbkSsnQ&usqp=CAU",
-                            width: 250,
-                            height: 100.0,
-                            fit: BoxFit.cover,
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Poster",
+                  style: TextStyle(color: Colors.black54, fontSize: 18.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () => uploadImage(),
+                    child: SizedBox(
+                      height: 250,
+                      child: Stack(
+                        children: <Widget>[
+                          Center(
+                            child: Container(
+                              color: Colors.white,
+                              child: (widget.imgUrl != null)
+                                  ? Image.network(
+                                      widget.imgUrl!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      "https://png.pngtree.com/png-vector/20191129/ourmid/pngtree-image-upload-icon-photo-upload-icon-png-image_2047546.jpg",
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
                           ),
-
-                    //Placeholder(
-                    // fallbackHeight: 100.0, fallbackWidth: 250.0),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    OutlinedButton(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          widget.imgUrl != null
-                              ? "Edit \n Image"
-                              : "Upload \n Image",
-                          textAlign: TextAlign.center,
-                        ),
+                          Container(
+                            padding: EdgeInsets.all(5.0),
+                            alignment: Alignment.bottomCenter,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: <Color>[
+                                  Colors.black.withAlpha(0),
+                                  Colors.black12,
+                                  Colors.black45
+                                ],
+                              ),
+                            ),
+                            child: Text(
+                              widget.id != null ? "Edit Image" : "Upload Image",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 20.0),
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: () => uploadImage(),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              imageLoding != false
-                  ? Column(
-                      children: [
-                        Center(child: CircularProgressIndicator()),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                      ],
-                    )
-                  : SizedBox(
-                      height: 10.0,
-                    ),
-              TextFormField(
-                controller: _titleTEC,
-                decoration: const InputDecoration(
-                  icon: const Icon(Icons.person),
-                  hintText: 'Enter Language Name',
-                  labelText: 'Name',
+                imageLoding != false
+                    ? Column(
+                        children: [
+                          Center(child: CircularProgressIndicator()),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                        ],
+                      )
+                    : SizedBox(
+                        height: 10.0,
+                      ),
+                TextFormField(
+                  controller: _titleTEC,
+                  decoration: const InputDecoration(
+                    icon: const Icon(Icons.person),
+                    hintText: 'Enter Language Name',
+                    labelText: 'Name',
+                  ),
                 ),
-              ),
-              TextFormField(
-                controller: _subtitletownTEC,
-                decoration: const InputDecoration(
-                  icon: const Icon(Icons.phone),
-                  hintText: 'Enter Subtitle',
-                  labelText: 'Subtitle',
+                TextFormField(
+                  controller: _subtitletownTEC,
+                  decoration: const InputDecoration(
+                    icon: const Icon(Icons.phone),
+                    hintText: 'Enter Subtitle',
+                    labelText: 'Subtitle',
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 150.0, top: 40.0),
-                child: new OutlinedButton(
-                  child: Text(widget.id != null ? "UPDATE" : "ADD"),
-                  onPressed: () {
-                    var data = {
-                      'title': _titleTEC.text,
-                      'subtitle': _subtitletownTEC.text,
-                      'image': widget.imgUrl
-                    };
-                    if (widget.id != null) {
-                      FirebaseFirestore.instance
-                          .collection('NoteList')
-                          .doc(widget.id)
-                          .update(data);
-                    } else {
-                      FirebaseFirestore.instance
-                          .collection('NoteList')
-                          .add(data);
-                    }
+                Container(
+                  padding: const EdgeInsets.only(left: 150.0, top: 40.0),
+                  child: new OutlinedButton(
+                    child: Text(widget.id != null ? "UPDATE" : "ADD"),
+                    onPressed: () {
+                      var data = {
+                        'title': _titleTEC.text,
+                        'subtitle': _subtitletownTEC.text,
+                        'image': widget.imgUrl
+                      };
+                      if (widget.id != null) {
+                        FirebaseFirestore.instance
+                            .collection('NoteList')
+                            .doc(widget.id)
+                            .update(data);
+                      } else {
+                        FirebaseFirestore.instance
+                            .collection('NoteList')
+                            .add(data);
+                      }
 
-                    Navigator.pop(context);
-                  },
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -162,7 +171,7 @@ class MyCustomFormState extends State<MyCustomForm> {
       //Select Image
       image = await _picker.getImage(source: ImageSource.gallery);
       setState(() {
-        imageLoding = true;
+        image != null ? imageLoding = true : imageLoding = false;
       });
       var file = File(image!.path);
       //Upload to Firebase
